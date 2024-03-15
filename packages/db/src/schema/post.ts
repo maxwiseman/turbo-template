@@ -1,14 +1,14 @@
 import { sql } from "drizzle-orm";
-import { serial, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, text } from "drizzle-orm/sqlite-core";
 
 import { mySqlTable } from "./_table";
 
 export const post = mySqlTable("post", {
-  id: serial("id").primaryKey(),
-  title: varchar("name", { length: 256 }).notNull(),
-  content: varchar("content", { length: 256 }).notNull(),
-  createdAt: timestamp("created_at")
+  id: int("id").primaryKey(),
+  title: text("name", { length: 256 }).notNull(),
+  content: text("content", { length: 256 }).notNull(),
+  createdAt: int("created_at", { mode: "timestamp" })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updatedAt").onUpdateNow(),
+  updatedAt: int("updatedAt", { mode: "timestamp" }),
 });

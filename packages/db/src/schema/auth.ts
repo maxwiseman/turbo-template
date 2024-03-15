@@ -1,24 +1,16 @@
 import { relations, sql } from "drizzle-orm";
-import {
-  index,
-  int,
-  primaryKey,
-  text,
-  timestamp,
-  varchar,
-} from "drizzle-orm/mysql-core";
+import { index, int, primaryKey, text } from "drizzle-orm/sqlite-core";
 
 import { mySqlTable } from "./_table";
 
 export const users = mySqlTable("user", {
-  id: varchar("id", { length: 255 }).notNull().primaryKey(),
-  name: varchar("name", { length: 255 }),
-  email: varchar("email", { length: 255 }).notNull(),
-  emailVerified: timestamp("emailVerified", {
-    mode: "date",
-    fsp: 3,
+  id: text("id", { length: 255 }).notNull().primaryKey(),
+  name: text("name", { length: 255 }),
+  email: text("email", { length: 255 }).notNull(),
+  emailVerified: int("emailVerified", {
+    mode: "timestamp",
   }).default(sql`CURRENT_TIMESTAMP(3)`),
-  image: varchar("image", { length: 255 }),
+  image: text("image", { length: 255 }),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -28,19 +20,19 @@ export const usersRelations = relations(users, ({ many }) => ({
 export const accounts = mySqlTable(
   "account",
   {
-    userId: varchar("userId", { length: 255 }).notNull(),
-    type: varchar("type", { length: 255 })
+    userId: text("userId", { length: 255 }).notNull(),
+    type: text("type", { length: 255 })
       .$type<"oauth" | "oidc" | "email">()
       .notNull(),
-    provider: varchar("provider", { length: 255 }).notNull(),
-    providerAccountId: varchar("providerAccountId", { length: 255 }).notNull(),
-    refresh_token: varchar("refresh_token", { length: 255 }),
+    provider: text("provider", { length: 255 }).notNull(),
+    providerAccountId: text("providerAccountId", { length: 255 }).notNull(),
+    refresh_token: text("refresh_token", { length: 255 }),
     access_token: text("access_token"),
     expires_at: int("expires_at"),
-    token_type: varchar("token_type", { length: 255 }),
-    scope: varchar("scope", { length: 255 }),
+    token_type: text("token_type", { length: 255 }),
+    scope: text("scope", { length: 255 }),
     id_token: text("id_token"),
-    session_state: varchar("session_state", { length: 255 }),
+    session_state: text("session_state", { length: 255 }),
   },
   (account) => ({
     compoundKey: primaryKey({
@@ -57,11 +49,9 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 export const sessions = mySqlTable(
   "session",
   {
-    sessionToken: varchar("sessionToken", { length: 255 })
-      .notNull()
-      .primaryKey(),
-    userId: varchar("userId", { length: 255 }).notNull(),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
+    sessionToken: text("sessionToken", { length: 255 }).notNull().primaryKey(),
+    userId: text("userId", { length: 255 }).notNull(),
+    expires: int("expires", { mode: "timestamp" }).notNull(),
   },
   (session) => ({
     userIdIdx: index("userId_idx").on(session.userId),
@@ -75,9 +65,9 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 export const verificationTokens = mySqlTable(
   "verificationToken",
   {
-    identifier: varchar("identifier", { length: 255 }).notNull(),
-    token: varchar("token", { length: 255 }).notNull(),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
+    identifier: text("identifier", { length: 255 }).notNull(),
+    token: text("token", { length: 255 }).notNull(),
+    expires: int("expires", { mode: "timestamp" }).notNull(),
   },
   (vt) => ({
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),

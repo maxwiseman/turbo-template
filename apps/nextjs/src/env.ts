@@ -13,10 +13,8 @@ export const env = createEnv({
    * This way you can ensure the app isn't built with invalid env vars.
    */
   server: {
-    DB_HOST: z.string(),
-    DB_NAME: z.string(),
-    DB_PASSWORD: z.string(),
-    DB_USERNAME: z.string(),
+    DB_URL: z.string(),
+    DB_AUTH_TOKEN: z.string(),
   },
   /**
    * Specify your client-side environment variables schema here.

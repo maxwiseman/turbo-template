@@ -1,5 +1,5 @@
-import { Client } from "@planetscale/database";
-import { drizzle } from "drizzle-orm/planetscale-serverless";
+import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
 
 import * as auth from "./schema/auth";
 import * as post from "./schema/post";
@@ -10,13 +10,11 @@ export { mySqlTable as tableCreator } from "./schema/_table";
 
 export * from "drizzle-orm";
 
-const psClient = new Client({
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- The environment variables are validated
-  host: process.env.DB_HOST!,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- The environment variables are validated
-  username: process.env.DB_USERNAME!,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- The environment variables are validated
-  password: process.env.DB_PASSWORD!,
+const client = createClient({
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- the env is validated in the build step
+  url: process.env.DATABASE_URL!,
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- the env is validated in the build step
+  authToken: process.env.DATABASE_AUTH_TOKEN!,
 });
 
-export const db = drizzle(psClient, { schema });
+export const db = drizzle(client, { schema });
