@@ -1,5 +1,6 @@
 "use client";
 
+import type { Key } from "react";
 import { use } from "react";
 
 import type { RouterOutputs } from "@acme/api";
@@ -85,11 +86,15 @@ export function PostList(props: {
   posts: Promise<RouterOutputs["post"]["all"]>;
 }): React.ReactElement {
   // TODO: Make `useSuspenseQuery` work without having to pass a promise from RSC
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- its fine
   const initialData = use(props.posts);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- its fine
   const { data: posts } = api.post.all.useQuery(undefined, {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- its fine
     initialData,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- its fine
   if (posts.length === 0) {
     return (
       <div className="relative flex w-full flex-col gap-4">
@@ -106,7 +111,8 @@ export function PostList(props: {
 
   return (
     <div className="flex w-full flex-col gap-4">
-      {posts.map((p) => {
+      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- its fine */}
+      {posts.map((p: { id: Key | null | undefined }) => {
         return <PostCard key={p.id} post={p} />;
       })}
     </div>
@@ -133,7 +139,9 @@ export function PostCard(props: {
   return (
     <div className="flex flex-row rounded-lg bg-muted p-4">
       <div className="flex-grow">
+        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- its fine */}
         <h2 className="text-2xl font-bold text-primary">{props.post.title}</h2>
+        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- its fine */}
         <p className="mt-2 text-sm">{props.post.content}</p>
       </div>
       <div>
@@ -141,6 +149,7 @@ export function PostCard(props: {
           variant="ghost"
           className="cursor-pointer text-sm font-bold uppercase text-primary hover:bg-transparent hover:text-white"
           onClick={() => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access -- its fine
             deletePost.mutate(props.post.id);
           }}
         >

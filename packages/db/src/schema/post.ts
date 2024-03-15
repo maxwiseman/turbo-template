@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { serial, timestamp, varchar } from "drizzle-orm/mysql-core";
+
 import { mySqlTable } from "./_table";
 
 export const post = mySqlTable("post", {

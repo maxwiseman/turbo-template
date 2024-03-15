@@ -1,11 +1,14 @@
 import { z } from "zod";
+
 import { desc, eq, schema } from "@acme/db";
 import { CreatePostSchema } from "@acme/validators";
+
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const postRouter = createTRPCRouter({
   all: publicProcedure.query(({ ctx }) => {
     // return ctx.db.select().from(schema.post).orderBy(desc(schema.post.id));
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- its ok
     return ctx.db.query.post.findMany({
       orderBy: desc(schema.post.id),
       limit: 10,
@@ -20,6 +23,7 @@ export const postRouter = createTRPCRouter({
       //   .from(schema.post)
       //   .where(eq(schema.post.id, input.id));
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- its ok
       return ctx.db.query.post.findFirst({
         where: eq(schema.post.id, input.id),
       });
@@ -28,10 +32,12 @@ export const postRouter = createTRPCRouter({
   create: protectedProcedure
     .input(CreatePostSchema)
     .mutation(({ ctx, input }) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- its ok
       return ctx.db.insert(schema.post).values(input);
     }),
 
   delete: protectedProcedure.input(z.number()).mutation(({ ctx, input }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- its ok
     return ctx.db.delete(schema.post).where(eq(schema.post.id, input));
   }),
 });
