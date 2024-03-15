@@ -1,6 +1,6 @@
-import { type DetailedHTMLProps, type HTMLAttributes } from "react";
+import type { DetailedHTMLProps, HTMLAttributes } from "react";
 
-import { cn } from "./utils";
+import { cn } from ".";
 
 export function Kbd({
   className,

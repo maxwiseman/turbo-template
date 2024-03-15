@@ -28,6 +28,8 @@ export function CreatePostForm() {
     },
   });
 
+  console.log("test");
+
   const utils = api.useUtils();
   const createPost = api.post.create.useMutation({
     onSuccess: async () => {

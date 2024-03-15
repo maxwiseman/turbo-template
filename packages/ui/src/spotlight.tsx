@@ -1,11 +1,11 @@
 import React from "react";
 
-import { cn } from "./utils";
+import { cn } from ".";
 
-type SpotlightProps = {
+interface SpotlightProps {
   className?: string;
   fill?: string;
-};
+}
 
 export function Spotlight({
   className,

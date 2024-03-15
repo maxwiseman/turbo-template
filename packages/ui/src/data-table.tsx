@@ -17,6 +17,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import { cn } from ".";
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 import {
@@ -41,7 +42,6 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
-import { cn } from "./utils";
 
 export function DataTable<T>({
   data,

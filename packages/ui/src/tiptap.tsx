@@ -42,10 +42,10 @@ import {
   SuperscriptIcon,
 } from "lucide-react";
 
+import { cn } from ".";
 import { Card } from "./card";
 import { Separator } from "./separator";
 import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
-import { cn } from "./utils";
 
 function MenuBar(): React.ReactElement {
   const { editor } = useCurrentEditor();
