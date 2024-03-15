@@ -107,9 +107,11 @@ function MenuBar(): React.ReactElement {
           <ToggleGroup
             type="single"
             value={
+              // eslint-disable-next-line no-nested-ternary -- its ok here
               editor.isActive("heading", { level: 1 })
                 ? "H1"
-                : editor.isActive("heading", { level: 2 })
+                : // eslint-disable-next-line no-nested-ternary -- its ok here
+                  editor.isActive("heading", { level: 2 })
                   ? "H2"
                   : editor.isActive("heading", { level: 3 })
                     ? "H3"
@@ -345,6 +347,7 @@ export function TipTap(
         {...props}
       >
         {}
+        {/* eslint-disable-next-line react/jsx-no-useless-fragment -- These are placeholders */}
         <></>
         {/* <FloatingMenu>This is the floating menu</FloatingMenu> */}
         {/* <BubbleMenu>

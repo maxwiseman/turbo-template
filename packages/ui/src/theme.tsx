@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 
-function ThemeToggle() {
+function ThemeToggle(): React.ReactElement {
   const { setTheme } = useTheme();
 
   return (
@@ -25,13 +25,25 @@ function ThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem
+          onClick={() => {
+            setTheme("light");
+          }}
+        >
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem
+          onClick={() => {
+            setTheme("dark");
+          }}
+        >
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem
+          onClick={() => {
+            setTheme("system");
+          }}
+        >
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

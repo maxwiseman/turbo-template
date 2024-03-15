@@ -1,5 +1,4 @@
 import type { DetailedHTMLProps, HTMLAttributes } from "react";
-
 import { cn } from ".";
 
 export function Kbd({

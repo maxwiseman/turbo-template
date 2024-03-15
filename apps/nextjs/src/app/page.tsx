@@ -10,7 +10,7 @@ import {
 
 export const runtime = "edge";
 
-export default async function HomePage() {
+export default async function HomePage(): Promise<React.ReactElement> {
   // You can await this here if you don't want to show Suspense fallback below
   const posts = api.post.all();
 

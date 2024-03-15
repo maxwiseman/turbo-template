@@ -5,11 +5,10 @@ import { useCallback, useState } from "react";
 import { IconFile, IconFileUpload, IconX } from "@tabler/icons-react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
-
-import { cn } from ".";
 import { Button } from "./button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./card";
 import { Separator } from "./separator";
+import { cn } from ".";
 
 function DropZone({
   className,

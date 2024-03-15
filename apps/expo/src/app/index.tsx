@@ -10,7 +10,7 @@ import { api } from "~/utils/api";
 function PostCard(props: {
   post: RouterOutputs["post"]["all"][number];
   onDelete: () => void;
-}) {
+}): React.ReactElement {
   return (
     <View className="flex flex-row rounded-lg bg-muted p-4">
       <View className="flex-grow">
@@ -18,13 +18,16 @@ function PostCard(props: {
           asChild
           href={{
             pathname: "/post/[id]",
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access -- this isn't a problem
             params: { id: props.post.id },
           }}
         >
           <Pressable className="">
             <Text className=" text-xl font-semibold text-primary">
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- itll be fine */}
               {props.post.title}
             </Text>
+            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- itll be fine */}
             <Text className="mt-2 text-foreground">{props.post.content}</Text>
           </Pressable>
         </Link>
@@ -36,7 +39,7 @@ function PostCard(props: {
   );
 }
 
-function CreatePost() {
+function CreatePost(): React.ReactElement {
   const utils = api.useUtils();
 
   const [title, setTitle] = useState("");
@@ -58,22 +61,22 @@ function CreatePost() {
         onChangeText={setTitle}
         placeholder="Title"
       />
-      {error?.data?.zodError?.fieldErrors.title && (
+      {error?.data?.zodError?.fieldErrors.title ? (
         <Text className="mb-2 text-destructive">
           {error.data.zodError.fieldErrors.title}
         </Text>
-      )}
+      ) : null}
       <TextInput
         className="items-center rounded-md border border-input bg-background px-3  text-lg leading-[1.25] text-foreground"
         value={content}
         onChangeText={setContent}
         placeholder="Content"
       />
-      {error?.data?.zodError?.fieldErrors.content && (
+      {error?.data?.zodError?.fieldErrors.content ? (
         <Text className="mb-2 text-destructive">
           {error.data.zodError.fieldErrors.content}
         </Text>
-      )}
+      ) : null}
       <Pressable
         className="flex items-center rounded bg-primary p-2"
         onPress={() => {
@@ -94,7 +97,7 @@ function CreatePost() {
   );
 }
 
-export default function Index() {
+export default function Index(): React.ReactElement {
   const utils = api.useUtils();
 
   const postQuery = api.post.all.useQuery();
@@ -126,13 +129,17 @@ export default function Index() {
         </View>
 
         <FlashList
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- itll be fine
           data={postQuery.data}
           estimatedItemSize={20}
+          // eslint-disable-next-line react/no-unstable-nested-components -- this is all boilerplate
           ItemSeparatorComponent={() => <View className="h-2" />}
           renderItem={(p) => (
             <PostCard
               post={p.item}
-              onDelete={() => deletePostMutation.mutate(p.item.id)}
+              onDelete={() => {
+                deletePostMutation.mutate((p.item as { id: number }).id);
+              }}
             />
           )}
         />

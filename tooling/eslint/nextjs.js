@@ -33,6 +33,7 @@ const config = {
     "no-return-await": "off",
     "import/no-default-export": "off",
     "import/no-extraneous-dependencies": "off",
+    "import/order": "off",
   },
   // rules: {
   //   "@next/next/no-html-link-for-pages": "off",

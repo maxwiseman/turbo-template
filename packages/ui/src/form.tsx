@@ -3,9 +3,11 @@
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import type {
   ControllerProps,
+  FieldError,
   FieldPath,
   FieldValues,
   UseFormProps,
+  UseFormReturn,
 } from "react-hook-form";
 import type { ZodType } from "zod";
 import * as React from "react";
@@ -25,7 +27,7 @@ const useForm = <TSchema extends ZodType>(
   props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
     schema: TSchema;
   },
-) => {
+): UseFormReturn<TSchema["_input"]> => {
   const form = __useForm<TSchema["_input"]>({
     ...props,
     resolver: zodResolver(props.schema, undefined),
@@ -47,26 +49,36 @@ const FormFieldContext = React.createContext<FormFieldContextValue>(
   {} as FormFieldContextValue,
 );
 
-const FormField = <
+function FormField<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({
-  ...props
-}: ControllerProps<TFieldValues, TName>) => {
+>({ ...props }: ControllerProps<TFieldValues, TName>): React.ReactElement {
   return (
     <FormFieldContext.Provider value={{ name: props.name }}>
       <Controller {...props} />
     </FormFieldContext.Provider>
   );
-};
+}
 
-const useFormField = () => {
+const useFormField = (): {
+  id: string;
+  name: string;
+  formItemId: string;
+  formDescriptionId: string;
+  formMessageId: string;
+  invalid: boolean;
+  isDirty: boolean;
+  isTouched: boolean;
+  isValidating: boolean;
+  error?: FieldError | undefined;
+} => {
   const fieldContext = React.useContext(FormFieldContext);
   const itemContext = React.useContext(FormItemContext);
   const { getFieldState, formState } = useFormContext();
 
   const fieldState = getFieldState(fieldContext.name, formState);
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- just in case
   if (!fieldContext) {
     throw new Error("useFormField should be used within <FormField>");
   }
@@ -134,11 +146,9 @@ const FormControl = React.forwardRef<
       ref={ref}
       id={formItemId}
       aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
+        !error ? formDescriptionId : `${formDescriptionId} ${formMessageId}`
       }
-      aria-invalid={!!error}
+      aria-invalid={Boolean(error)}
       {...props}
     />
   );
@@ -167,7 +177,7 @@ const FormMessage = React.forwardRef<
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
-  const body = error ? String(error?.message) : children;
+  const body = error ? String(error.message) : children;
 
   if (!body) {
     return null;

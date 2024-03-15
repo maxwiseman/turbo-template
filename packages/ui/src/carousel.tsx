@@ -67,13 +67,13 @@ const Carousel = React.forwardRef<
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
 
-    const onSelect = React.useCallback((api: CarouselApi) => {
-      if (!api) {
+    const onSelect = React.useCallback((carouselApi: CarouselApi) => {
+      if (!carouselApi) {
         return;
       }
 
-      setCanScrollPrev(api.canScrollPrev());
-      setCanScrollNext(api.canScrollNext());
+      setCanScrollPrev(carouselApi.canScrollPrev());
+      setCanScrollNext(carouselApi.canScrollNext());
     }, []);
 
     const scrollPrev = React.useCallback(() => {
@@ -126,6 +126,7 @@ const Carousel = React.forwardRef<
           api,
           opts,
           orientation:
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- just in case
             orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
           scrollPrev,
           scrollNext,

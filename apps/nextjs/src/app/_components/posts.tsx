@@ -19,7 +19,7 @@ import { CreatePostSchema } from "@acme/validators";
 
 import { api } from "~/trpc/react";
 
-export function CreatePostForm() {
+export function CreatePostForm(): React.ReactElement {
   const form = useForm({
     schema: CreatePostSchema,
     defaultValues: {
@@ -27,8 +27,6 @@ export function CreatePostForm() {
       title: "",
     },
   });
-
-  console.log("test");
 
   const utils = api.useUtils();
   const createPost = api.post.create.useMutation({
@@ -38,7 +36,7 @@ export function CreatePostForm() {
     },
     onError: (err) => {
       toast.error(
-        err?.data?.code === "UNAUTHORIZED"
+        err.data?.code === "UNAUTHORIZED"
           ? "You must be logged in to post"
           : "Failed to create post",
       );
@@ -85,7 +83,7 @@ export function CreatePostForm() {
 
 export function PostList(props: {
   posts: Promise<RouterOutputs["post"]["all"]>;
-}) {
+}): React.ReactElement {
   // TODO: Make `useSuspenseQuery` work without having to pass a promise from RSC
   const initialData = use(props.posts);
   const { data: posts } = api.post.all.useQuery(undefined, {
@@ -117,7 +115,7 @@ export function PostList(props: {
 
 export function PostCard(props: {
   post: RouterOutputs["post"]["all"][number];
-}) {
+}): React.ReactElement {
   const utils = api.useUtils();
   const deletePost = api.post.delete.useMutation({
     onSuccess: async () => {
@@ -125,7 +123,7 @@ export function PostCard(props: {
     },
     onError: (err) => {
       toast.error(
-        err?.data?.code === "UNAUTHORIZED"
+        err.data?.code === "UNAUTHORIZED"
           ? "You must be logged in to delete a post"
           : "Failed to delete post",
       );
@@ -142,7 +140,9 @@ export function PostCard(props: {
         <Button
           variant="ghost"
           className="cursor-pointer text-sm font-bold uppercase text-primary hover:bg-transparent hover:text-white"
-          onClick={() => deletePost.mutate(props.post.id)}
+          onClick={() => {
+            deletePost.mutate(props.post.id);
+          }}
         >
           Delete
         </Button>
@@ -151,7 +151,9 @@ export function PostCard(props: {
   );
 }
 
-export function PostCardSkeleton(props: { pulse?: boolean }) {
+export function PostCardSkeleton(props: {
+  pulse?: boolean;
+}): React.ReactElement {
   const { pulse = true } = props;
   return (
     <div className="flex flex-row rounded-lg bg-muted p-4">

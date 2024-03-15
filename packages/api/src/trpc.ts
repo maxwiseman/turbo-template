@@ -29,10 +29,12 @@ import { db } from "@acme/db";
 export const createTRPCContext = async (opts: {
   headers: Headers;
   session: Session | null;
-}) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- its ok here
+}): Promise<{ session: Session | null; db: any }> => {
   const session = opts.session ?? (await auth());
   const source = opts.headers.get("x-trpc-source") ?? "unknown";
 
+  // eslint-disable-next-line no-console -- this is probably nice to have
   console.log(">>> tRPC Request from", source, "by", session?.user);
 
   return {

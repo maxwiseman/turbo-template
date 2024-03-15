@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useMediaQuery } from "usehooks-ts";
-
-import { cn } from ".";
 import {
   Dialog,
   DialogContent,
@@ -22,6 +20,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "./drawer";
+import { cn } from ".";
 
 export function ResponsiveDialog(
   props: React.ComponentProps<typeof Drawer> &

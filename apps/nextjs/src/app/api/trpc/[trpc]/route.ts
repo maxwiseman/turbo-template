@@ -9,14 +9,14 @@ export const runtime = "edge";
  * Configure basic CORS headers
  * You should extend this to match your needs
  */
-const setCorsHeaders = (res: Response) => {
+const setCorsHeaders = (res: Response): void => {
   res.headers.set("Access-Control-Allow-Origin", "*");
   res.headers.set("Access-Control-Request-Method", "*");
   res.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
   res.headers.set("Access-Control-Allow-Headers", "*");
 };
 
-export const OPTIONS = () => {
+export const OPTIONS = (): Response => {
   const response = new Response(null, {
     status: 204,
   });

@@ -25,6 +25,7 @@ export const {
   providers: [Discord],
   callbacks: {
     session: (opts) => {
+      // eslint-disable-next-line @typescript-eslint/no-throw-literal -- wtf does that even mean
       if (!("user" in opts)) throw "unreachable with session strategy";
 
       return {

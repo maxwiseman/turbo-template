@@ -9,7 +9,7 @@ import { useColorScheme } from "nativewind";
 
 // This is the main layout of the app
 // It wraps your pages with the providers they need
-export default function RootLayout() {
+export default function RootLayout(): React.ReactElement {
   const { colorScheme } = useColorScheme();
   return (
     <TRPCProvider>
@@ -23,7 +23,7 @@ export default function RootLayout() {
             backgroundColor: "#f472b6",
           },
           contentStyle: {
-            backgroundColor: colorScheme == "dark" ? "#09090B" : "#FFFFFF",
+            backgroundColor: colorScheme === "dark" ? "#09090B" : "#FFFFFF",
           },
         }}
       />

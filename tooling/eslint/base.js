@@ -5,6 +5,8 @@ const config = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
+    require.resolve("@vercel/style-guide/eslint/node"),
+    require.resolve("@vercel/style-guide/eslint/typescript"),
   ],
   env: {
     es2022: true,
@@ -28,6 +30,12 @@ const config = {
       { checksVoidReturn: { attributes: false } },
     ],
     "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+    "no-console": ["warn", { allow: ["warn", "error"] }],
+    "no-return-await": "off",
+    "import/no-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/order": "off",
+    "import/no-named-as-default": "off",
   },
   ignorePatterns: [
     "**/*.config.js",

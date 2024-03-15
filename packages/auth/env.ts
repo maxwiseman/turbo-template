@@ -12,5 +12,5 @@ export const env = createEnv({
   },
   client: {},
   experimental__runtimeEnv: {},
-  skipValidation: !!process.env.CI || !!process.env.SKIP_ENV_VALIDATION,
+  skipValidation: Boolean(process.env.CI) || Boolean(process.env.SKIP_ENV_VALIDATION),
 });
