@@ -1,5 +1,5 @@
 {
-  "name": "create-t3-turbo",
+  "name": "turbo-template",
   "private": true,
   "engines": {
     "node": ">=20.11.1"

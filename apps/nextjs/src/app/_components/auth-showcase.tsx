@@ -1,3 +1,5 @@
+import { IconBrandDiscord } from "@tabler/icons-react";
+
 import { auth, signIn, signOut } from "@acme/auth";
 import { Button } from "@acme/ui/button";
 
@@ -8,11 +10,12 @@ export async function AuthShowcase(): Promise<React.ReactElement> {
     return (
       <form>
         <Button
-          size="lg"
+          variant="secondary"
           formAction={async () => {
             "use server";
             await signIn("discord");
           }}
+          icon={<IconBrandDiscord />}
         >
           Sign in with Discord
         </Button>

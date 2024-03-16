@@ -1,11 +1,10 @@
 "use client";
 
-import type { Key } from "react";
 import { use } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
-import type { RouterOutputs } from "@acme/api";
-import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@acme/ui/card";
 import {
   Form,
   FormControl,
@@ -15,6 +14,7 @@ import {
   useForm,
 } from "@acme/ui/form";
 import { Input } from "@acme/ui/input";
+import { Skeleton } from "@acme/ui/skeleton";
 import { toast } from "@acme/ui/toast";
 import { CreatePostSchema } from "@acme/validators";
 
@@ -91,44 +91,55 @@ export function CreatePostForm(): React.ReactElement {
 }
 
 export function PostList(props: {
-  posts: Promise<RouterOutputs["post"]["all"]>;
+  posts: Promise<
+    {
+      id: number;
+      title: string;
+      content: string;
+      createdAt: Date;
+      updatedAt: Date | null;
+    }[]
+  >;
 }): React.ReactElement {
   // TODO: Make `useSuspenseQuery` work without having to pass a promise from RSC
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- its fine
   const initialData = use(props.posts);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- its fine
   const { data: posts } = api.post.all.useQuery(undefined, {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- its fine
     initialData,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- its fine
   if (posts.length === 0) {
     return (
-      <div className="relative flex w-full flex-col gap-4">
-        <PostCardSkeleton pulse={false} />
-        <PostCardSkeleton pulse={false} />
-        <PostCardSkeleton pulse={false} />
-
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/10">
-          <p className="text-2xl font-bold text-white">No posts yet</p>
-        </div>
+      <div className="flex h-[22.625rem] w-full items-center justify-center pb-8">
+        No posts yet!
       </div>
     );
   }
 
   return (
     <div className="flex w-full flex-col gap-4">
-      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- its fine */}
-      {posts.map((p: { id: Key | null | undefined }) => {
-        return <PostCard key={p.id} post={p} />;
-      })}
+      {posts.map(
+        (p: {
+          id: number;
+          title: string;
+          content: string;
+          createdAt: Date;
+          updatedAt: Date | null;
+        }) => {
+          return <PostCard key={p.id} post={p} />;
+        },
+      )}
     </div>
   );
 }
 
 export function PostCard(props: {
-  post: RouterOutputs["post"]["all"][number];
+  post: {
+    id: number;
+    title: string;
+    content: string;
+    createdAt: Date;
+    updatedAt: Date | null;
+  };
 }): React.ReactElement {
   const utils = api.useUtils();
   const deletePost = api.post.delete.useMutation({
@@ -145,53 +156,25 @@ export function PostCard(props: {
   });
 
   return (
-    <div className="flex flex-row rounded-lg bg-muted p-4">
-      <div className="flex-grow">
-        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- its fine */}
-        <h2 className="text-2xl font-bold text-primary">{props.post.title}</h2>
-        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- its fine */}
-        <p className="mt-2 text-sm">{props.post.content}</p>
-      </div>
-      <div>
-        <Button
-          variant="ghost"
-          className="cursor-pointer text-sm font-bold uppercase text-primary hover:bg-transparent hover:text-white"
-          onClick={() => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access -- its fine
-            deletePost.mutate(props.post.id);
-          }}
-        >
-          Delete
-        </Button>
-      </div>
-    </div>
+    <Card>
+      <CardHeader className="p-6 pb-4">
+        <CardTitle className="flex items-center justify-between">
+          {props.post.title}
+          <Button
+            variant="secondary"
+            onClick={() => {
+              deletePost.mutate(props.post.id);
+            }}
+            size="icon"
+            icon={<IconTrash />}
+          />
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-6 pt-0">{props.post.content}</CardContent>
+    </Card>
   );
 }
 
-export function PostCardSkeleton(props: {
-  pulse?: boolean;
-}): React.ReactElement {
-  const { pulse = true } = props;
-  return (
-    <div className="flex flex-row rounded-lg bg-muted p-4">
-      <div className="flex-grow">
-        <h2
-          className={cn(
-            "w-1/4 rounded bg-primary text-2xl font-bold",
-            pulse && "animate-pulse",
-          )}
-        >
-          &nbsp;
-        </h2>
-        <p
-          className={cn(
-            "mt-2 w-1/3 rounded bg-current text-sm",
-            pulse && "animate-pulse",
-          )}
-        >
-          &nbsp;
-        </p>
-      </div>
-    </div>
-  );
+export function PostCardSkeleton(): React.ReactElement {
+  return <Skeleton className="h-[6.875rem] w-full rounded-xl" />;
 }

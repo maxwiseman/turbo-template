@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 
+import { Separator } from "@acme/ui/separator";
+
 import { api } from "~/trpc/server";
 import { AuthShowcase } from "./_components/auth-showcase";
 import {
@@ -76,7 +78,8 @@ export default async function HomePage(): Promise<React.ReactElement> {
         <AuthShowcase />
 
         <CreatePostForm />
-        <div className="w-full max-w-2xl overflow-y-scroll">
+        <Separator className="my-6 max-w-2xl" />
+        <div className="w-full max-w-2xl overflow-x-visible overflow-y-scroll pb-8">
           <Suspense
             fallback={
               <div className="flex w-full flex-col gap-4">
