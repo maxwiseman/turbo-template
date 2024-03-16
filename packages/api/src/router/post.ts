@@ -29,12 +29,10 @@ export const postRouter = createTRPCRouter({
       });
     }),
 
-  create: protectedProcedure
-    .input(CreatePostSchema)
-    .mutation(({ ctx, input }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- its ok
-      return ctx.db.insert(schema.post).values(input);
-    }),
+  create: publicProcedure.input(CreatePostSchema).mutation(({ ctx, input }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- its ok
+    return ctx.db.insert(schema.post).values(input);
+  }),
 
   delete: protectedProcedure.input(z.number()).mutation(({ ctx, input }) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- its ok

@@ -1,9 +1,9 @@
 import { relations, sql } from "drizzle-orm";
 import { index, int, primaryKey, text } from "drizzle-orm/sqlite-core";
 
-import { mySqlTable } from "./_table";
+import { sqliteTable } from "./_table";
 
-export const users = mySqlTable("user", {
+export const users = sqliteTable("user", {
   id: text("id", { length: 255 }).notNull().primaryKey(),
   name: text("name", { length: 255 }),
   email: text("email", { length: 255 }).notNull(),
@@ -17,7 +17,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
 }));
 
-export const accounts = mySqlTable(
+export const accounts = sqliteTable(
   "account",
   {
     userId: text("userId", { length: 255 }).notNull(),
@@ -46,7 +46,7 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, { fields: [accounts.userId], references: [users.id] }),
 }));
 
-export const sessions = mySqlTable(
+export const sessions = sqliteTable(
   "session",
   {
     sessionToken: text("sessionToken", { length: 255 }).notNull().primaryKey(),
@@ -62,7 +62,7 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, { fields: [sessions.userId], references: [users.id] }),
 }));
 
-export const verificationTokens = mySqlTable(
+export const verificationTokens = sqliteTable(
   "verificationToken",
   {
     identifier: text("identifier", { length: 255 }).notNull(),

@@ -6,7 +6,7 @@ import * as post from "./schema/post";
 
 export const schema = { ...auth, ...post };
 
-export { mySqlTable as tableCreator } from "./schema/_table";
+export { sqliteTable as tableCreator } from "./schema/_table";
 
 export * from "drizzle-orm";
 

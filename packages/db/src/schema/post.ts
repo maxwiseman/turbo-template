@@ -1,9 +1,9 @@
 import { sql } from "drizzle-orm";
 import { int, text } from "drizzle-orm/sqlite-core";
 
-import { mySqlTable } from "./_table";
+import { sqliteTable } from "./_table";
 
-export const post = mySqlTable("post", {
+export const post = sqliteTable("post", {
   id: int("id").primaryKey(),
   title: text("name", { length: 256 }).notNull(),
   content: text("content", { length: 256 }).notNull(),

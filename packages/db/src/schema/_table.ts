@@ -6,4 +6,4 @@ import { sqliteTableCreator } from "drizzle-orm/sqlite-core";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const mySqlTable = sqliteTableCreator((name) => `turbo_${name}`);
+export const sqliteTable = sqliteTableCreator((name) => `turbo_${name}`);

@@ -44,12 +44,20 @@ export function CreatePostForm(): React.ReactElement {
     },
   });
 
+  function submit(data: { title: string; content: string }): void {
+    toast.promise(createPost.mutateAsync(data), {
+      loading: "Creating post...",
+      success: "Post created!",
+      error: "Failed to create post!",
+    });
+  }
+
   return (
     <Form {...form}>
       <form
         className="flex w-full max-w-2xl flex-col gap-4"
         onSubmit={form.handleSubmit(async (data) => {
-          createPost.mutate(data);
+          submit(data);
         })}
       >
         <FormField
