@@ -15,6 +15,7 @@ import {
 } from "@acme/ui/form";
 import { Input } from "@acme/ui/input";
 import { Skeleton } from "@acme/ui/skeleton";
+import { Textarea } from "@acme/ui/textarea";
 import { toast } from "@acme/ui/toast";
 import { CreatePostSchema } from "@acme/validators";
 
@@ -78,7 +79,7 @@ export function CreatePostForm(): React.ReactElement {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} placeholder="Content" />
+                <Textarea {...field} placeholder="Content" />
               </FormControl>
               <FormMessage />
             </FormItem>
